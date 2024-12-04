@@ -9,15 +9,25 @@ public class Quicksort
         int pivot = array[high];
         int i = low - 1;
 
-        for(int j = low;  j <= high - 1; j++)
+        Console.WriteLine($"\n--- Partition (low={low}, high={high}, pivot={pivot}) ---");
+        Console.WriteLine("Initial Array: ");
+        print(array);
+
+        for (int j = low;  j <= high - 1; j++)
         {
             if(array[j] < pivot)
             {
                 i++;
                 Swap(array, i, j);
+                Console.WriteLine($"SWAP: array[{i}]={array[i]} ↔ array[{j}]={array[j]}");
+                print(array);
             }
         }
         Swap(array, i + 1, high);
+        Console.WriteLine($"SWAP (pivot): array[{i + 1}]={array[i + 1]} ↔ array[{high}]={array[high]}");
+        print(array);
+
+        Console.WriteLine($"--- Partition Done (pivot index={i + 1}) ---\n");
         return i + 1;
     }
 
@@ -33,9 +43,12 @@ public class Quicksort
     {
         if(low < high)
         {
-            int ret_piv = Partition(array, low, high);
-            quicksort(array, low, ret_piv - 1);
-            quicksort(array, ret_piv + 1, high);
+            int pivotIndex = Partition(array, low, high);
+            Console.WriteLine($"\n>>> Recursively sorting left part (low={low}, high={pivotIndex - 1})");
+            quicksort(array, low, pivotIndex - 1);
+
+            Console.WriteLine($"\n>>> Recursively sorting right part (low={pivotIndex + 1}, high={high})");
+            quicksort(array, pivotIndex + 1, high);
         }
     }
 
@@ -52,10 +65,14 @@ public class Quicksort
 
     public static void Main(string[] args)
     {
-        int[] array = { 5, 6, 1, 0, 5, 7, 8 };
-        int n = array.Length;
+        int[] array = { 5, 3, 1, 9 };
+        Console.WriteLine("Original Array:");
         print(array);
-        quicksort(array, 0, n-1);
+
+        Console.WriteLine("\nStarting Quicksort");
+        quicksort(array, 0, array.Length - 1);
+
+        Console.WriteLine("\nSorted Array:");
         print(array);
     }
 }
